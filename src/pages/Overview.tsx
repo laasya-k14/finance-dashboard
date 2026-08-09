@@ -1,4 +1,5 @@
 import StatCard from "../components/StatCard";
+import SavingsGoalCard from "../components/SavingsGoalCard";
 import { stats, transactions, formatAmount } from "../data/seed";
 
 export default function Overview() {
@@ -13,6 +14,8 @@ export default function Overview() {
           <StatCard key={stat.label} stat={stat} />
         ))}
       </div>
+
+      <SavingsGoalCard />
 
       <h2 className="mt-10 mb-3 text-lg font-semibold">Recent activity</h2>
       <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
