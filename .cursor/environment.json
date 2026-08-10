@@ -1,0 +1,16 @@
+{
+  "name": "Finley — Personal Finance Dashboard",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "dev",
+      "command": "npm run dev"
+    }
+  ],
+  "ports": [
+    {
+      "name": "vite dev server",
+      "port": 5173
+    }
+  ]
+}
