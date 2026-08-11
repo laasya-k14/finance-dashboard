@@ -5,9 +5,7 @@ export default function Overview() {
   const recent = transactions.slice(0, 6);
   return (
     <div>
-      {/* NOTE: heading sits tight against the stat cards on purpose —
-          "increase the padding" is the scripted first live-demo change. */}
-      <h1 className="pb-1 text-3xl font-bold tracking-tight">Overview</h1>
+      <h1 className="pb-6 text-3xl font-bold tracking-tight">Overview</h1>
       <div className="grid grid-cols-4 gap-4">
         {stats.map((stat) => (
           <StatCard key={stat.label} stat={stat} />
