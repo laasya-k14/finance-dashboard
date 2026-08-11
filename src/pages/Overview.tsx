@@ -1,5 +1,5 @@
 import StatCard from "../components/StatCard";
-import { stats, transactions, formatAmount } from "../data/seed";
+import { formatAmount, stats, transactions } from "../data/seed";
 
 export default function Overview() {
   const recent = transactions.slice(0, 6);

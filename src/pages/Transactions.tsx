@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import { transactions, formatAmount } from "../data/seed";
+import { formatAmount, transactions } from "../data/seed";
 
-type SortKey = "date" | "merchant" | "amount";
+type SortKey = "amount" | "date" | "merchant";
 
 export default function Transactions() {
   const [query, setQuery] = useState("");
@@ -84,7 +84,7 @@ export default function Transactions() {
             {rows.length === 0 && (
               <tr>
                 <td colSpan={4} className="px-5 py-10 text-center text-slate-400">
-                  No transactions match “{query}”.
+                  No transactions match "{query}".
                 </td>
               </tr>
             )}

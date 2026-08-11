@@ -1,10 +1,10 @@
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
-import Overview from "./pages/Overview";
-import Transactions from "./pages/Transactions";
 import Budgets from "./pages/Budgets";
+import Overview from "./pages/Overview";
 import RecurringBills from "./pages/RecurringBills";
 import Settings from "./pages/Settings";
+import Transactions from "./pages/Transactions";
 
 export default function App() {
   return (
