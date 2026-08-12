@@ -9,7 +9,7 @@ export interface Stat {
   icon: string;
 }
 
-export interface Transaction {
+interface Transaction {
   id: string;
   date: string; // fixed ISO date strings — never computed from "now"
   merchant: string;
@@ -17,7 +17,7 @@ export interface Transaction {
   amount: number; // negative = spend, positive = income
 }
 
-export type Category =
+type Category =
   | "Groceries"
   | "Dining"
   | "Transport"
@@ -27,7 +27,7 @@ export type Category =
   | "Income"
   | "Shopping";
 
-export interface Budget {
+interface Budget {
   category: Category;
   limit: number;
   spent: number;
