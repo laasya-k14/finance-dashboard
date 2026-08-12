@@ -8,6 +8,7 @@
 | FIN-4 | Build out the Recurring Bills page       | **Open**    |
 | FIN-5 | Make the sidebar sticky while scrolling  | **Open**    |
 | FIN-6 | Savings goal card on Overview            | In review   |
+| FIN-7 | General code tidying                     | Done        |
 
 ## FIN-4 — Build out the Recurring Bills page
 
@@ -21,3 +22,9 @@ pages and adhere to accessibility guidelines.
 
 The sidebar currently scrolls away on long pages. It should stay in place
 (icons and nav fixed) while the main content scrolls.
+
+## FIN-7 — General code tidying
+
+Sweep the codebase for unused imports/exports, dead wrappers, and small
+formatting inconsistencies. Do not change intentional demo scaffolding for
+open feature tickets (Recurring Bills empty state, non-sticky sidebar).
