@@ -10,7 +10,7 @@ const links = [
 
 export default function Sidebar() {
   return (
-    <aside className="sticky top-0 h-screen w-60 shrink-0 overflow-y-auto border-r border-slate-200 bg-white px-4 py-8">
+    <aside className="sticky top-0 h-screen w-60 shrink-0 self-start overflow-y-auto border-r border-slate-200 bg-white px-4 py-8">
       <div className="mb-10 flex items-center gap-2 px-2">
         <span className="text-2xl">🪙</span>
         <span className="text-xl font-bold tracking-tight">Finley</span>
