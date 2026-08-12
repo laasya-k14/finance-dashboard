@@ -14,7 +14,7 @@ export default function Overview() {
         ))}
       </div>
 
-      <h2 className="mt-10 mb-3 text-lg font-semibold">Recent activity</h2>
+      <h2 className="mt-16 mb-3 text-lg font-semibold">Recent activity</h2>
       <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
         <ul className="divide-y divide-slate-100">
           {recent.map((t) => (
