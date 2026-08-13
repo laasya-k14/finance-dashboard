@@ -39,8 +39,9 @@ export default function Transactions() {
     <div>
       <h1 className="pb-6 text-3xl font-bold tracking-tight">Transactions</h1>
       <input
+        key={rows.length}
         type="search"
-        value={query}
+        defaultValue={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search by merchant or category…"
         aria-label="Search transactions"
