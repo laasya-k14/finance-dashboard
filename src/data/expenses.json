@@ -1,0 +1,7 @@
+[
+  { "category": "Housing", "amount": 1850.00 },
+  { "category": "Transportation", "amount": 420.50 },
+  { "category": "Food", "amount": 640.75 },
+  { "category": "Utilities", "amount": 247.20 },
+  { "category": "Entertainment", "amount": 175.00 }
+]

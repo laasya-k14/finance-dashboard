@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Overview from "../pages/Overview";
+import expenses from "../data/expenses.json";
 import { stats } from "../data/seed";
 
 function renderPage() {
@@ -29,5 +30,18 @@ describe("Overview", () => {
     renderPage();
     expect(screen.getByText("Recent activity")).toBeInTheDocument();
     expect(screen.getByText("Whole Foods Market")).toBeInTheDocument();
+  });
+
+  it("renders a monthly expenses breakdown from expenses.json", () => {
+    renderPage();
+    expect(screen.getByText("Monthly expenses")).toBeInTheDocument();
+    for (const item of expenses) {
+      expect(screen.getByText(item.category)).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(item.amount),
+        ),
+      ).toBeInTheDocument();
+    }
   });
 });
