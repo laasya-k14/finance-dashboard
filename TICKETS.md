@@ -5,7 +5,7 @@
 | FIN-1 | Overview page with summary stat cards    | Done        |
 | FIN-2 | Transaction history with search and sort | Done        |
 | FIN-3 | Per-category budget tracking             | Done        |
-| FIN-4 | Build out the Recurring Bills page       | **Open**    |
+| FIN-4 | Build out the Recurring Bills page       | Done        |
 | FIN-5 | Make the sidebar sticky while scrolling  | **Open**    |
 | FIN-6 | Savings goal card on Overview            | In review   |
 

@@ -76,3 +76,68 @@ export function formatAmount(amount: number): string {
   const sign = amount < 0 ? "-" : "+";
   return `${sign}$${Math.abs(amount).toFixed(2)}`;
 }
+
+export function formatCurrency(amount: number): string {
+  return amount.toLocaleString("en-US", { style: "currency", currency: "USD" });
+}
+
+// Fixed "today" for bill reminders so the page never depends on Date.now().
+export const BILL_AS_OF_DATE = "2026-08-14";
+
+export type Cadence = "Weekly" | "Monthly" | "Quarterly" | "Yearly";
+
+export type BillStatus = "Overdue" | "Due soon" | "Upcoming";
+
+export interface RecurringBill {
+  id: string;
+  name: string;
+  amount: number;
+  cadence: Cadence;
+  nextDue: string; // fixed ISO date — never computed from "now"
+}
+
+export const recurringBills: RecurringBill[] = [
+  { id: "b01", name: "Apartment Rent", amount: 1850.0, cadence: "Monthly", nextDue: "2026-09-01" },
+  { id: "b02", name: "Pacific Gas & Electric", amount: 142.8, cadence: "Monthly", nextDue: "2026-08-16" },
+  { id: "b03", name: "Comcast Internet", amount: 79.99, cadence: "Monthly", nextDue: "2026-08-18" },
+  { id: "b04", name: "Verizon Wireless", amount: 85.0, cadence: "Monthly", nextDue: "2026-08-20" },
+  { id: "b05", name: "Netflix", amount: 15.99, cadence: "Monthly", nextDue: "2026-09-05" },
+  { id: "b06", name: "Spotify", amount: 10.99, cadence: "Monthly", nextDue: "2026-08-30" },
+  { id: "b07", name: "State Farm Auto", amount: 426.0, cadence: "Quarterly", nextDue: "2026-09-12" },
+  { id: "b08", name: "Planet Fitness", amount: 24.99, cadence: "Monthly", nextDue: "2026-08-22" },
+  { id: "b09", name: "New York Times", amount: 17.0, cadence: "Monthly", nextDue: "2026-08-10" },
+  { id: "b10", name: "Amazon Prime", amount: 139.0, cadence: "Yearly", nextDue: "2026-11-03" },
+  { id: "b11", name: "Farmers Market CSA", amount: 40.0, cadence: "Weekly", nextDue: "2026-08-23" },
+];
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+export function daysUntilDue(nextDue: string, asOf: string = BILL_AS_OF_DATE): number {
+  const due = Date.parse(`${nextDue}T00:00:00.000Z`);
+  const from = Date.parse(`${asOf}T00:00:00.000Z`);
+  return Math.round((due - from) / MS_PER_DAY);
+}
+
+export function getBillStatus(nextDue: string, asOf: string = BILL_AS_OF_DATE): BillStatus {
+  const days = daysUntilDue(nextDue, asOf);
+  if (days < 0) return "Overdue";
+  if (days <= 7) return "Due soon";
+  return "Upcoming";
+}
+
+export function monthlyEquivalent(amount: number, cadence: Cadence): number {
+  switch (cadence) {
+    case "Weekly":
+      return (amount * 52) / 12;
+    case "Monthly":
+      return amount;
+    case "Quarterly":
+      return amount / 3;
+    case "Yearly":
+      return amount / 12;
+  }
+}
+
+export function monthlyRecurringTotal(bills: RecurringBill[] = recurringBills): number {
+  return bills.reduce((sum, bill) => sum + monthlyEquivalent(bill.amount, bill.cadence), 0);
+}
