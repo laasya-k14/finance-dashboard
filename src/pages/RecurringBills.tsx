@@ -5,9 +5,9 @@ export default function RecurringBills() {
   return (
     <div>
       <h1 className="pb-6 text-3xl font-bold tracking-tight">Recurring Bills</h1>
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-24 text-center">
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-24 text-center dark:border-slate-700 dark:bg-slate-900">
         <span className="text-4xl">🔁</span>
-        <p className="mt-4 text-sm font-medium text-slate-600">
+        <p className="mt-4 text-sm font-medium text-slate-600 dark:text-slate-300">
           Nothing here yet
         </p>
         <p className="mt-1 text-xs text-slate-400">
