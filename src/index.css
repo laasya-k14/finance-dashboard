@@ -9,3 +9,8 @@ html {
 html.dark {
   color-scheme: dark;
 }
+
+html.dark input[type="date"],
+html.dark input[type="search"] {
+  color-scheme: dark;
+}
