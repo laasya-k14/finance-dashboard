@@ -1,22 +1,35 @@
+import ThemeToggle from "../components/ThemeToggle";
+import { useTheme } from "../theme";
+
 const settings = [
   { label: "Currency", value: "USD ($)" },
   { label: "Start of week", value: "Monday" },
   { label: "Email reports", value: "Weekly" },
-  { label: "Theme", value: "Light" },
 ];
 
 export default function Settings() {
+  const { theme } = useTheme();
+
   return (
     <div>
       <h1 className="pb-6 text-3xl font-bold tracking-tight">Settings</h1>
-      <div className="max-w-lg rounded-xl border border-slate-200 bg-white shadow-sm">
-        <ul className="divide-y divide-slate-100">
+      <div className="max-w-lg rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <ul className="divide-y divide-slate-100 dark:divide-slate-800">
           {settings.map((s) => (
             <li key={s.label} className="flex items-center justify-between px-5 py-4">
               <span className="text-sm font-medium">{s.label}</span>
-              <span className="text-sm text-slate-500">{s.value}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">{s.value}</span>
             </li>
           ))}
+          <li className="flex items-center justify-between px-5 py-4">
+            <span className="text-sm font-medium">Theme</span>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-slate-500 dark:text-slate-400">
+                {theme === "dark" ? "Dark" : "Light"}
+              </span>
+              <ThemeToggle />
+            </div>
+          </li>
         </ul>
       </div>
     </div>
