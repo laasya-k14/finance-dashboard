@@ -13,8 +13,20 @@ describe("Transactions", () => {
   it("filters rows by merchant search", async () => {
     render(<Transactions />);
     await userEvent.type(screen.getByRole("searchbox"), "netflix");
+    expect(screen.getByRole("searchbox")).toHaveValue("netflix");
     expect(screen.getByText("Netflix")).toBeInTheDocument();
     expect(screen.queryByText("Uber")).not.toBeInTheDocument();
+  });
+
+  it("keeps the typed search text when the result count changes", async () => {
+    render(<Transactions />);
+    const input = screen.getByRole("searchbox");
+    await userEvent.type(input, "netflix");
+    // Result count changes after the first character; the same input node
+    // must keep focus and the full query rather than remounting.
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveValue("netflix");
+    expect(screen.getAllByRole("row")).toHaveLength(2); // header + Netflix
   });
 
   it("filters rows by category search", async () => {
