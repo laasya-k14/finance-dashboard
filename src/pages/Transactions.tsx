@@ -1,20 +1,29 @@
 import { useMemo, useState } from "react";
 import { transactions, formatAmount } from "../data/seed";
+import { isWithinDateRange } from "../utils/dateRange";
 
 type SortKey = "date" | "merchant" | "amount";
+
+const inputClass =
+  "rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none";
 
 export default function Transactions() {
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("date");
   const [ascending, setAscending] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const hasDateRange = Boolean(startDate || endDate);
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const filtered = transactions.filter(
-      (t) =>
+    const filtered = transactions.filter((t) => {
+      const matchesSearch =
         t.merchant.toLowerCase().includes(q) ||
-        t.category.toLowerCase().includes(q),
-    );
+        t.category.toLowerCase().includes(q);
+      return matchesSearch && isWithinDateRange(t.date, startDate, endDate);
+    });
     const sorted = [...filtered].sort((a, b) => {
       let cmp: number;
       if (sortKey === "amount") cmp = a.amount - b.amount;
@@ -22,7 +31,7 @@ export default function Transactions() {
       return ascending ? cmp : -cmp;
     });
     return sorted;
-  }, [query, sortKey, ascending]);
+  }, [query, sortKey, ascending, startDate, endDate]);
 
   function toggleSort(key: SortKey) {
     if (key === sortKey) setAscending((v) => !v);
@@ -35,18 +44,63 @@ export default function Transactions() {
   const arrow = (key: SortKey) =>
     sortKey === key ? (ascending ? " ↑" : " ↓") : "";
 
+  const emptyMessage = (() => {
+    const hasQuery = query.trim().length > 0;
+    if (hasQuery && hasDateRange) {
+      return `No transactions match “${query.trim()}” in the selected date range.`;
+    }
+    if (hasQuery) return `No transactions match “${query}”.`;
+    if (hasDateRange) return "No transactions in the selected date range.";
+    return "No transactions.";
+  })();
+
   return (
     <div>
       <h1 className="pb-6 text-3xl font-bold tracking-tight">Transactions</h1>
-      <input
-        key={rows.length}
-        type="search"
-        defaultValue={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search by merchant or category…"
-        aria-label="Search transactions"
-        className="mb-4 w-80 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none"
-      />
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by merchant or category…"
+          aria-label="Search transactions"
+          className={`w-80 ${inputClass}`}
+        />
+        <label className="flex items-center gap-2 text-sm text-slate-600">
+          <span>From</span>
+          <input
+            type="date"
+            value={startDate}
+            max={endDate || undefined}
+            onChange={(e) => setStartDate(e.target.value)}
+            aria-label="Start date"
+            className={inputClass}
+          />
+        </label>
+        <label className="flex items-center gap-2 text-sm text-slate-600">
+          <span>To</span>
+          <input
+            type="date"
+            value={endDate}
+            min={startDate || undefined}
+            onChange={(e) => setEndDate(e.target.value)}
+            aria-label="End date"
+            className={inputClass}
+          />
+        </label>
+        {hasDateRange && (
+          <button
+            type="button"
+            onClick={() => {
+              setStartDate("");
+              setEndDate("");
+            }}
+            className="text-sm font-medium text-indigo-600 hover:text-indigo-800"
+          >
+            Clear dates
+          </button>
+        )}
+      </div>
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
@@ -85,7 +139,7 @@ export default function Transactions() {
             {rows.length === 0 && (
               <tr>
                 <td colSpan={4} className="px-5 py-10 text-center text-slate-400">
-                  No transactions match “{query}”.
+                  {emptyMessage}
                 </td>
               </tr>
             )}
