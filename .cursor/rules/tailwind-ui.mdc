@@ -1,0 +1,32 @@
+---
+description: Use Tailwind CSS for all new UI (components, pages, features)
+globs: src/**/*.{tsx,jsx,css}
+alwaysApply: true
+---
+
+# Tailwind for New UI
+
+Style every new component, page, and feature with Tailwind utility classes on `className`. This app uses Tailwind v4 (`@import "tailwindcss"` in `src/index.css`, `@tailwindcss/vite` in `vite.config.ts`).
+
+Do not add CSS modules, styled-components, Emotion, Sass, new `.css` files, `<style>` tags, or inline `style={{ ... }}` for layout or visuals. Keep `src/index.css` as the Tailwind entry (`@import "tailwindcss"` only) unless a global `@theme` token is required.
+
+## Patterns
+
+Match existing Finley UI: `slate` neutrals, `indigo` for active/focus, `emerald` for positive amounts, `rose` for negative change. Prefer layout utilities (`flex`, `grid`, `gap-*`) and shared card chrome (`rounded-xl border border-slate-200 bg-white shadow-sm`).
+
+```tsx
+// ❌ BAD — inline styles or custom CSS
+<div style={{ padding: 20, background: "#fff" }}>Balance</div>
+
+// ❌ BAD — new stylesheet
+import "./StatCard.css";
+
+// ✅ GOOD — Tailwind utilities
+<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+  <span className="text-sm font-medium text-slate-500">Balance</span>
+  <div className="mt-2 text-2xl font-bold">$4,280.00</div>
+  <div className="mt-1 text-xs font-medium text-emerald-600">+3.2%</div>
+</div>
+```
+
+Conditional styles: concatenate utility strings (or `` className={`... ${cond ? "text-emerald-600" : "text-rose-500"}`} ``), not separate CSS classes. Extract repeated class strings into a shared component rather than a new CSS file.
