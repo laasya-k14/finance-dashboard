@@ -18,6 +18,11 @@ describe("Overview", () => {
     expect(screen.getByRole("heading", { name: "Overview" })).toBeInTheDocument();
   });
 
+  it("gives the heading the same bottom padding as other pages", () => {
+    renderPage();
+    expect(screen.getByRole("heading", { name: "Overview" })).toHaveClass("pb-6");
+  });
+
   it("renders a card for every stat", () => {
     renderPage();
     for (const stat of stats) {
