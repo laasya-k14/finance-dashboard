@@ -27,6 +27,17 @@ export type Category =
   | "Income"
   | "Shopping";
 
+export const categories: Category[] = [
+  "Groceries",
+  "Dining",
+  "Transport",
+  "Utilities",
+  "Entertainment",
+  "Health",
+  "Income",
+  "Shopping",
+];
+
 export interface Budget {
   category: Category;
   limit: number;
