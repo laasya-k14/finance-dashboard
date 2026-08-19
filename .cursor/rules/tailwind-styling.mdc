@@ -1,0 +1,36 @@
+---
+description: Use Tailwind CSS utility classes for all new UI (components, pages, features)
+alwaysApply: true
+---
+
+# Use Tailwind for New UI
+
+This app is styled with Tailwind CSS 4 (`@import "tailwindcss"` in `src/index.css`, Vite plugin in `vite.config.ts`). Style every new component, page, and feature with Tailwind utility classes on `className`.
+
+## Do
+
+- Use Tailwind utilities for layout, spacing, typography, color, borders, and hover/focus states
+- Match existing tokens: `slate` for neutrals, `indigo` for accents, `emerald` / `rose` for positive / negative
+- Use `className` template strings (or `clsx` / `cn`) for conditional classes
+- Prefer composing utilities over adding CSS
+
+## Don't
+
+- Don't add CSS modules, Sass, styled-components, Emotion, or other CSS-in-JS
+- Don't add new `.css` files or extra component rules in `src/index.css`
+- Don't use inline `style={{}}` except for values Tailwind cannot express (for example a dynamic width from data)
+
+## Examples
+
+```tsx
+// ❌ BAD — inline styles or custom CSS
+<div style={{ padding: 20, background: "white" }} />
+
+// ✅ GOOD — Tailwind utilities matching existing cards
+<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+  <h1 className="pb-6 text-3xl font-bold tracking-tight">Budgets</h1>
+  <p className={`text-sm font-semibold ${over ? "text-rose-500" : "text-emerald-600"}`}>
+    {label}
+  </p>
+</div>
+```
