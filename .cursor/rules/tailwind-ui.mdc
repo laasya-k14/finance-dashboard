@@ -1,0 +1,35 @@
+---
+description: Use Tailwind CSS for all new UI (components, pages, and features)
+globs: src/**/*.{tsx,jsx}
+alwaysApply: true
+---
+
+# Tailwind for all new UI
+
+This app is styled with **Tailwind CSS v4** (`@tailwindcss/vite`, `@import "tailwindcss"` in `src/index.css`). Use Tailwind utility classes for every new component, page, and feature.
+
+## Do
+
+- Style JSX with `className` utilities. Match existing tokens: `slate` neutrals, `indigo` accents, `emerald` / `rose` for positive / negative.
+- Reuse patterns already in the app: `rounded-xl border border-slate-200 bg-white shadow-sm`, page titles as `text-3xl font-bold tracking-tight`.
+- Prefer layout utilities (`flex`, `grid`, `gap-*`, `px-*`, `py-*`) over extra wrappers or custom CSS.
+- Put app-wide tokens (colors, fonts) in `src/index.css` with `@theme` only when a new design token is needed.
+
+```tsx
+// ✅ GOOD
+<div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+  <h2 className="text-lg font-semibold">Recent activity</h2>
+</div>
+```
+
+## Don't
+
+- Do not add CSS Modules, Sass, styled-components, Emotion, or new `.css` files for component styles.
+- Do not use inline `style={{ ... }}` for layout, spacing, color, or typography.
+- Do not use raw `<style>` tags or global CSS selectors for one-off UI.
+
+```tsx
+// ❌ BAD
+<div style={{ padding: 20, background: "#fff" }} />
+<div className={styles.card} />
+```
