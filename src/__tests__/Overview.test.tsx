@@ -30,4 +30,11 @@ describe("Overview", () => {
     expect(screen.getByText("Recent activity")).toBeInTheDocument();
     expect(screen.getByText("Whole Foods Market")).toBeInTheDocument();
   });
+
+  it("uses light text on the page heading", () => {
+    renderPage();
+    expect(screen.getByRole("heading", { name: "Overview" })).toHaveClass(
+      "text-slate-50",
+    );
+  });
 });
