@@ -30,4 +30,9 @@ describe("Overview", () => {
     expect(screen.getByText("Recent activity")).toBeInTheDocument();
     expect(screen.getByText("Whole Foods Market")).toBeInTheDocument();
   });
+
+  it("uses a dark canvas with light text", () => {
+    const { container } = renderPage();
+    expect(container.firstChild).toHaveClass("bg-slate-950", "text-slate-50");
+  });
 });
