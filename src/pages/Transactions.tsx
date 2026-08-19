@@ -1,20 +1,39 @@
 import { useMemo, useState } from "react";
-import { transactions, formatAmount } from "../data/seed";
+import { useSearchParams } from "react-router-dom";
+import { transactions, formatAmount, type Category } from "../data/seed";
 
 type SortKey = "date" | "merchant" | "amount";
 
+const categories = [...new Set(transactions.map((t) => t.category))].sort();
+
 export default function Transactions() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("date");
   const [ascending, setAscending] = useState(false);
 
+  const rawCategory = searchParams.get("category") ?? "";
+  const category: Category | "" = categories.includes(rawCategory as Category)
+    ? (rawCategory as Category)
+    : "";
+
+  function setCategory(next: Category | "") {
+    const params = new URLSearchParams(searchParams);
+    if (next) params.set("category", next);
+    else params.delete("category");
+    setSearchParams(params, { replace: true });
+  }
+
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const filtered = transactions.filter(
-      (t) =>
+    const filtered = transactions.filter((t) => {
+      if (category && t.category !== category) return false;
+      if (!q) return true;
+      return (
         t.merchant.toLowerCase().includes(q) ||
-        t.category.toLowerCase().includes(q),
-    );
+        t.category.toLowerCase().includes(q)
+      );
+    });
     const sorted = [...filtered].sort((a, b) => {
       let cmp: number;
       if (sortKey === "amount") cmp = a.amount - b.amount;
@@ -22,7 +41,7 @@ export default function Transactions() {
       return ascending ? cmp : -cmp;
     });
     return sorted;
-  }, [query, sortKey, ascending]);
+  }, [query, category, sortKey, ascending]);
 
   function toggleSort(key: SortKey) {
     if (key === sortKey) setAscending((v) => !v);
@@ -35,18 +54,41 @@ export default function Transactions() {
   const arrow = (key: SortKey) =>
     sortKey === key ? (ascending ? " ↑" : " ↓") : "";
 
+  const emptyMessage = (() => {
+    const parts: string[] = [];
+    if (category) parts.push(`category “${category}”`);
+    if (query.trim()) parts.push(`search “${query.trim()}”`);
+    if (parts.length === 0) return "No transactions match.";
+    if (parts.length === 1) return `No transactions match ${parts[0]}.`;
+    return `No transactions match ${parts[0]} and ${parts[1]}.`;
+  })();
+
   return (
     <div>
       <h1 className="pb-6 text-3xl font-bold tracking-tight">Transactions</h1>
-      <input
-        key={rows.length}
-        type="search"
-        defaultValue={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search by merchant or category…"
-        aria-label="Search transactions"
-        className="mb-4 w-80 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none"
-      />
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by merchant or category…"
+          aria-label="Search transactions"
+          className="w-80 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none"
+        />
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value as Category | "")}
+          aria-label="Filter by category"
+          className="rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none"
+        >
+          <option value="">All categories</option>
+          {categories.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
@@ -85,7 +127,7 @@ export default function Transactions() {
             {rows.length === 0 && (
               <tr>
                 <td colSpan={4} className="px-5 py-10 text-center text-slate-400">
-                  No transactions match “{query}”.
+                  {emptyMessage}
                 </td>
               </tr>
             )}
