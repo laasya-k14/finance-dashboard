@@ -4,6 +4,7 @@ import Overview from "./pages/Overview";
 import Transactions from "./pages/Transactions";
 import Budgets from "./pages/Budgets";
 import RecurringBills from "./pages/RecurringBills";
+import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/budgets" element={<Budgets />} />
           <Route path="/bills" element={<RecurringBills />} />
+          <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </main>
